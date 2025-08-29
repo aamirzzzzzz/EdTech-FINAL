@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="container py-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Add Lesson for "{{ module.title|default:'Untitled module' }}"</h2>
+    </div>
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+              <div class="form-text text-muted">{{ field.help_text }}</div>
+            {% endif %}
+            {% if field.errors %}
+              <div class="text-danger">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Add Lesson</button>
+        <a href="{% url 'module_content' module.course.id %}" class="btn btn-secondary ms-2">Back</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
